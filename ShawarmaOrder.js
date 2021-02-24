@@ -77,7 +77,7 @@ module.exports = class ShwarmaOrder extends Order{
         </script>
         Thank you ${this.sNumber} for your order of $${this.nOrder}.
         <div id="paypal-button-container"></div>
-  
+        <script src="/js/order.js" type="module"></script>
         <script>
           paypal.Buttons({
               createOrder: function(data, actions) {
@@ -95,8 +95,8 @@ module.exports = class ShwarmaOrder extends Order{
                 return actions.order.capture().then(function(details) {
                   // This function shows a transaction success message to your buyer.
                   $.post(".", details, ()=>{
-                    window.open("", "_self");
-                    window.close(); 
+                    details.order = ${JSON.stringify(this)};
+                    window.fSaveOrder(details);
                   });
                 });
               }
