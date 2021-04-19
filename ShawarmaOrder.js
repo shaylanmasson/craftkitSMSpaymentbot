@@ -2,9 +2,7 @@ const Order = require("./Order");
 
 const OrderState = Object.freeze({
     WELCOMING:   Symbol("welcoming"),
-    SIZE:   Symbol("size"),
-    TOPPINGS:   Symbol("toppings"),
-    DRINKS:  Symbol("drinks"),
+    KIT:   Symbol("kit"),
     PAYMENT: Symbol("payment")
 });
 
@@ -12,49 +10,51 @@ module.exports = class ShwarmaOrder extends Order{
     constructor(sNumber, sUrl){
         super(sNumber, sUrl);
         this.stateCur = OrderState.WELCOMING;
-        this.sSize = "";
-        this.sToppings = "";
-        this.sDrinks = "";
-        this.sItem = "shawarama";
+        this.sKit = "";
+        this.sItem = "Craft Kit";
     }
     handleInput(sInput){
         let aReturn = [];
         switch(this.stateCur){
             case OrderState.WELCOMING:
-                this.stateCur = OrderState.SIZE;
-                aReturn.push("Welcome to Richard's Shawarma.");
-                aReturn.push("What size would you like?");
+                this.stateCur = OrderState.KIT;
+                aReturn.push("Welcome and thanks for checking out Stay-at-Home Craft Kits with Shaylan.");
+                aReturn.push("Our upcoming Kits include:");
+                aReturn.push("Paint Away on May 2, 2021");
+                aReturn.push("Cookie Decorating on May 9, 2021");
+                aReturn.push("String Art on May 16, 2021");
+                aReturn.push("What kit would you like to order?");
                 break;
-            case OrderState.SIZE:
-                this.stateCur = OrderState.TOPPINGS
-                this.sSize = sInput;
-                aReturn.push("What toppings would you like?");
-                break;
-            case OrderState.TOPPINGS:
-                this.stateCur = OrderState.DRINKS
-                this.sToppings = sInput;
-                aReturn.push("Would you like drinks with that?");
-                break;
-            case OrderState.DRINKS:
-                this.stateCur = OrderState.PAYMENT;
-                this.nOrder = 15;
-                if(sInput.toLowerCase() != "no"){
-                    this.sDrinks = sInput;
+            case OrderState.KIT:
+                if(sInput.toLowerCase() == "paint away" ||
+                sInput.toLowerCase() == "cookie decorating" ||
+                sInput.toLowerCase() == "string art"){
+                this.stateCur = OrderState.PAYMENT
+                this.sKIT = sInput;
+                aReturn.push("Thank you for your order of the");
+                aReturn.push(`${this.sKit} ${this.sItem}`);
+                }else{
+                    aReturn.push("Please choose from the following Craft Kits, PAINT AWAY, COOKIE DECORATING, or STRING ART.")
                 }
-                aReturn.push("Thank-you for your order of");
-                aReturn.push(`${this.sSize} ${this.sItem} with ${this.sToppings}`);
-                if(this.sDrinks){
-                    aReturn.push(this.sDrinks);
-                }
-                aReturn.push(`Please pay for your order here`);
+                 //calculate $ for order
+                 if(this.sKit.toLowerCase().includes("paint away")){
+                  {
+                      this.nOrder = 14;
+                  }
+                  }else if (this.sKit.toLowerCase().includes("cookie decorating")){
+                  this.nOrder = 10;
+                  }
+                  if(this.sKit.toLowerCase().includes("string art")){
+                          this.nOrder = 20;
+                      }
+               
+                aReturn.push(`Please pay $${this.nOrder} for your order here`);
                 aReturn.push(`${this.sUrl}/payment/${this.sNumber}/`);
                 break;
             case OrderState.PAYMENT:
                 console.log(sInput);
                 this.isDone(true);
-                let d = new Date();
-                d.setMinutes(d.getMinutes() + 20);
-                aReturn.push(`Your order will be delivered at ${d.toTimeString()}`);
+                aReturn.push("Thank you for placing an order for Stay-at-Home Craft Kits with Shaylan. We'll contact you on the date of delivery.")
                 break;
         }
         return aReturn;
