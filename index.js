@@ -49,11 +49,11 @@ app.get("/payment/:phone", (req, res) => {
   // this happens when the user clicks on the link in SMS
   const sFrom = req.params.phone;
   if (!oOrders.hasOwnProperty(sFrom)) {
-    res.end("Thank you for your order of");
-  } else {
-    res.end(oOrders[sFrom].renderForm());
-  }
-});
+     res.end("Thank you for your order of");
+   } else {
+      res.end(oOrders[sFrom].renderForm());
+   }
+}); 
 
 app.post("/payment", (req, res) => {
   // this happens when the user clicks on the link in SMS
