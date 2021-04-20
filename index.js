@@ -22,11 +22,6 @@ app.use(express.static("www"));
 
 let oSockets = {};
 let oOrders = {};
-
-app.post("/payment/", (req, res) => {
-  res.end(`Pay here please for ${req.params.title}`);
-});
-
 app.post("/payment/:phone", (req, res) => {
   // this happens when the order is complete
   sFrom = req.params.phone;
@@ -54,7 +49,7 @@ app.get("/payment/:phone", (req, res) => {
   // this happens when the user clicks on the link in SMS
   const sFrom = req.params.phone;
   if (!oOrders.hasOwnProperty(sFrom)) {
-    res.end("order already complete");
+    res.end("Thank you for your order of");
   } else {
     res.end(oOrders[sFrom].renderForm());
   }

@@ -31,7 +31,7 @@ module.exports = class ShwarmaOrder extends Order{
                 sInput.toLowerCase() == "string art"){
                 this.stateCur = OrderState.PAYMENT
                 this.sKIT = sInput;
-                aReturn.push("Thank you for your order of the");
+                aReturn.push("Thank you for your order of");
                 aReturn.push(`${this.sKit} ${this.sItem}`);
                 }else{
                     aReturn.push("Please choose from the following Craft Kits, PAINT AWAY, COOKIE DECORATING, or STRING ART.")
